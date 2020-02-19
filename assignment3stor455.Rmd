@@ -1,0 +1,38 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(readr)
+library(mosaic)
+library(Stat2Data)
+library(dplyr)
+
+AmesTrain <- read_csv("C:/Users/Jessi/Downloads/AmesTrain16.csv")
+```
+
+
+
+```{r}
+full = lm(Price~LotFrontage+LotArea+Quality+Condition+YearBuilt+YearRemodel+BasementFinSF+BasementUnFinSF+BasementSF+FirstSF+SecondSF+GroundSF+BasementFBath+BasementHBath+FullBath+HalfBath+Bedroom+TotalRooms+Fireplaces+GarageCars+GarageSF+WoodDeckSF+OpenPorchSF+EnclosedPorchSF+ScreenPorchSF, data=AmesTrain)
+
+MSE = (summary(full)$sigma)^2
+
+none = lm(Price ~ 1, data=AmesTrain)
+
+step(none,scope=list(upper=full),scale=MSE)
+
+```
+
+```{r}
+newmodel = lm(formula = Price ~ Quality + FirstSF + SecondSF + BasementFinSF + 
+    LotArea + YearBuilt + GarageSF + BasementSF + YearRemodel + 
+    LotFrontage + Fireplaces + HalfBath + Condition + Bedroom + 
+    TotalRooms + ScreenPorchSF + EnclosedPorchSF, data = AmesTrain)
+summary(newmodel)
+```
